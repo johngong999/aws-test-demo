@@ -1,0 +1,18 @@
+version: 0.2
+phases:
+    install:
+        runtime-versions:
+            nodejs: 18
+
+    build:
+        commands:
+            - echo Build started on `date`
+            - echo "BUCKET_PATH" $  
+            - aws s3 sync . s3://$BUCKET_PATH --delete
+            - aws s3 cp s3://$BUCKET_PATH/index.html s3://$BUCKET_PATH/index.html --cache-control "max-age=0, no-cache, no-store, must-revalidate"
+            - aws s3 cp s3://$BUCKET_PATH/static s3://$BUCKET_PATH/static --recursive --cache-control "max-age=31536000,public"
+            - aws cloudfront create-invalidation --distribution-id $CFD_ID --paths "/index.html"
+
+    post_build:
+        commands:
+            - echo "Good Bye"
