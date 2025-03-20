@@ -10,8 +10,6 @@ phases:
             - echo "BUCKET_PATH" $BUCKET_PATH
             - echo "CFD_ID" $CFD_ID
             - aws s3 sync . s3://$BUCKET_PATH --delete
-            - aws s3 cp s3://$BUCKET_PATH/index.html s3://$BUCKET_PATH/index.html --cache-control "max-age=0, no-cache, no-store, must-revalidate"
-            - aws s3 cp s3://$BUCKET_PATH/static s3://$BUCKET_PATH/static --recursive --cache-control "max-age=31536000,public"
             - aws cloudfront create-invalidation --distribution-id $CFD_ID --paths "/index.html"
 
     post_build:
