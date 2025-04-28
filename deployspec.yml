@@ -9,7 +9,7 @@ phases:
             - echo Build started on `date`
             - echo "BUCKET_PATH" $BUCKET_PATH
             - echo "CFD_ID" $CFD_ID
-            - aws s3 sync . s3://$BUCKET_PATH --delete
+            - aws s3 sync . s3://$BUCKET_PATH
             - aws cloudfront create-invalidation --distribution-id $CFD_ID --paths "/index.html"
 
     post_build:
